@@ -2,119 +2,132 @@
 
 REST API สำหรับจัดการ Task พัฒนาด้วย Python Flask พร้อม JWT Authentication
 
------
+---
 
 ## วิธีติดตั้งและรัน
 
-bash
+```bash
 pip install -r requirements.txt
 python app.py
+```
 
-API จะรันที่ http://localhost:5000
+API จะรันที่ `http://localhost:5000`
 
------
+---
 
 ## Endpoint List
 
-|Method|Endpoint       |Auth Required|
-|------|---------------|-------------|
-|POST  |/login         |❌            |
-|GET   |/tasks         |✅ JWT        |
-|POST  |/tasks         |✅ JWT        |
-|GET   |/external-tasks|✅ JWT        |
+| Method | Endpoint | Auth Required |
+|--------|----------|--------------|
+| POST | /login | ❌ |
+| GET | /tasks | ✅ JWT |
+| POST | /tasks | ✅ JWT |
+| GET | /external-tasks | ✅ JWT |
+| GET | /public-tasks | ❌ |
 
------
+---
 
 ## ตัวอย่าง Request / Response
 
 ### POST /login
-
 **Request:**
-
-json
+```json
 {
   "username": "student",
   "password": "1234"
 }
-
+```
 **Response:**
-
-json
+```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR..."
 }
+```
 
------
+---
 
 ### GET /tasks
-
 **Header:**
-
+```
 Authorization: Bearer <token>
-
+```
 **Response:**
-
-json
+```json
 {
   "tasks": [
     { "id": 1, "title": "Do homework", "status": "pending" }
   ]
 }
+```
 
------
+---
 
 ### POST /tasks
-
 **Header:**
-
+```
 Authorization: Bearer <token>
-
+```
 **Request:**
-
-json
+```json
 {
   "title": "Finish assignment",
   "status": "pending"
 }
-
+```
 **Response:**
-
-json
+```json
 {
   "message": "Task created",
   "task": { "id": 3, "title": "Finish assignment", "status": "pending" }
 }
+```
 
------
+---
 
 ### GET /external-tasks
-
+**Header:**
+```
+Authorization: Bearer <token>
+```
 **Response:**
-
-json
+```json
 {
   "my_tasks": [...],
-  "external_tasks": [...]
+  "friend1_tasks": [...],
+  "friend2_tasks": [...]
 }
+```
 
------
+---
+
+### GET /public-tasks
+**Response:**
+```json
+{
+  "tasks": [
+    { "id": 1, "title": "Do homework", "status": "pending" }
+  ]
+}
+```
+
+---
 
 ## ตัวอย่าง Error
 
-json
+```json
 { "error": { "code": 400, "message": "Title is required" } }
 { "error": { "code": 401, "message": "Unauthorized" } }
 { "error": { "code": 401, "message": "Token expired" } }
+```
 
------
+---
 
 ## Deploy
 
 แนะนำใช้ [Render](https://render.com) หรือ [PythonAnywhere](https://pythonanywhere.com)
 
 ### Deploy บน Render
-
 1. Push โค้ดขึ้น GitHub
-1. สร้าง Web Service บน Render
-1. ใส่ Start Command: python app.py
-1. Render จะให้ URL เช่น https://your-app.onrender.com
+2. สร้าง Web Service บน Render
+3. ใส่ Start Command: `python app.py`
+4. Render จะให้ URL เช่น `https://your-app.onrender.com`
