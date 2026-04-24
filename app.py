@@ -120,6 +120,10 @@ def external_tasks():
         "friend1_tasks": friend1_tasks,
         "friend2_tasks": friend2_tasks
     }), 200
+
+@app.route("/public-tasks", methods=["GET"])
+def public_tasks():
+    return jsonify({"tasks": tasks})
  
 # ========== Run ==========
 if __name__ == "__main__":
